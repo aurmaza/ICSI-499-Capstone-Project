@@ -1,5 +1,11 @@
 import nltk
+import gensim as gn
+import numpy
 nltk.download('stopwords')
+# pip install nltk
+# pip install gensim
+# for gensim to work, most recent numpy must be installed aswell
+# do pip install --upgrade numpy
 
 users = {
     "Akhil": "How do central banks control inflation? The US Federal Reserve typically designs financial policy to achieve an inflation target of 2 % . Inflation targeting is a central banking policy that revolves around adjusting monetary policy to achieve a specified annual rate of inflation. Interest rates can be seen as a mechanism or tool to achieve inflation targeting. When inflation is high, banks will raise interest rates. This has a trickle down effect starting with central banks, going down to commercial banks, and eventually down to commercial bank clients such as businesses and individual consumers.",
@@ -8,7 +14,7 @@ users = {
     "Joe": "Today I wrote a script that helped me automate an algorithm.",
     "Goutham": "Both players are given the same string, . Both players have to make substrings using the letters of the string . Stuart has to make words starting with consonants. Kevin has to make words starting with vowels. The game ends when both players have made all possible substrings."
 }
-output = {}
+res = {}
 filteredUsers = {}
 stpwords = set(nltk.corpus.stopwords.words('english'))
 stpwords.add('the')
@@ -16,13 +22,29 @@ stpwords.add('this')
 for userName, text in users.items():
     tolowerCase = text.lower()
     filtered = filter(lambda w: not w in stpwords, tolowerCase.split())
-    output[userName] = list(filtered)
+    res[userName] = list(filtered)
 sentences = {}
-print(output)
-for userName, text in output.items():
+
+for userName, text in res.items():
     sentenceCount = 0
     for token in text:
         if (token.endswith(".") or token.endswith("?") or token.endswith("!")):
-            sentenceCount+=1
+            sentenceCount += 1
             sentences[userName] = sentenceCount
-print(sentences)
+
+print(res['Akhil'][0])
+# Assigns every word in every post to a unique id.
+dicto = gn.corpora.Dictionary(res.values())
+
+# Counts the overall number of words to each id
+corpus = [dicto.doc2bow(docs) for docs in res.values()]
+
+
+# Inverse Document Frequency which weighs down tokens that appear frequently
+tf_idf = gn.models.TfidfModel(corpus)
+sims = gn.similarities.Similarity('workdir/', tf_idf[corpus],
+                                  num_features=len(dicto))
+
+
+# In this we will have to take each document which acts as a key word, create a new dictonary, feature count, corpus etc. from the rest
+# of the other words, then see its similarity to all the others
