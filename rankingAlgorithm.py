@@ -1,4 +1,5 @@
 import nltk
+nltk.download('stopwords')
 
 users = {
     "Akhil": "How do central banks control inflation? The US Federal Reserve typically designs financial policy to achieve an inflation target of 2 % . Inflation targeting is a central banking policy that revolves around adjusting monetary policy to achieve a specified annual rate of inflation. Interest rates can be seen as a mechanism or tool to achieve inflation targeting. When inflation is high, banks will raise interest rates. This has a trickle down effect starting with central banks, going down to commercial banks, and eventually down to commercial bank clients such as businesses and individual consumers.",
@@ -16,4 +17,12 @@ for userName, text in users.items():
     tolowerCase = text.lower()
     filtered = filter(lambda w: not w in stpwords, tolowerCase.split())
     output[userName] = list(filtered)
+sentences = {}
 print(output)
+for userName, text in output.items():
+    sentenceCount = 0
+    for token in text:
+        if (token.endswith(".") or token.endswith("?") or token.endswith("!")):
+            sentenceCount+=1
+            sentences[userName] = sentenceCount
+print(sentences)
