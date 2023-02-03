@@ -16,10 +16,17 @@ users = {
     "Goutham": "Both players are given the same string, . Both players have to make substrings using the letters of the string . Stuart has to make words starting with consonants. Kevin has to make words starting with vowels. The game ends when both players have made all possible substrings."
 }
 res = {}
+wordCount = {}
 filteredUsers = {}
 stpwords = set(nltk.corpus.stopwords.words('english'))
 stpwords.add('the')
 stpwords.add('this')
+
+for key in users:
+    wordCount[key] = len(users[key].split())
+
+print(wordCount)
+
 for userName, text in users.items():
     tolowerCase = text.lower()
     filtered = filter(lambda w: not w in stpwords, tolowerCase.split())
