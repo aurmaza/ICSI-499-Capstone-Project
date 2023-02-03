@@ -1,6 +1,7 @@
 import nltk
 import gensim as gn
 import numpy
+from operator import itemgetter
 nltk.download('stopwords')
 # pip install nltk
 # pip install gensim
@@ -32,19 +33,32 @@ for userName, text in res.items():
             sentenceCount += 1
             sentences[userName] = sentenceCount
 
-print(res['Akhil'][0])
-# Assigns every word in every post to a unique id.
-dicto = gn.corpora.Dictionary(res.values())
 
-# Counts the overall number of words to each id
-corpus = [dicto.doc2bow(docs) for docs in res.values()]
+def similarities(blogList):
+    users = list(blogList.keys())
+
+    for idx, name in enumerate(users):
+        others = users[:idx] + users[idx+1:]
+
+        compares = [blogList[k] for k in others]
+        # Assigns Every word in every post to a unique id
+        dicto = gn.corpora.Dictionary(compares)
+
+        # counts overall number of words to each id
+        corpus = [dicto.doc2bow(docs) for docs in compares]
+        # # Inverse Document Frequency which weighs down tokens that appear frequently
+        tf_idf = gn.models.TfidfModel(corpus)
+        sims = gn.similarities.Similarity('', tf_idf[corpus], num_features=len(dicto))
+        querydoc = dicto.doc2bow(blogList[name])
+        query_doc_tf_idf = tf_idf[querydoc]
+        print('Comparing Result:', sims[query_doc_tf_idf])
 
 
-# Inverse Document Frequency which weighs down tokens that appear frequently
-tf_idf = gn.models.TfidfModel(corpus)
-sims = gn.similarities.Similarity('workdir/', tf_idf[corpus],
-                                  num_features=len(dicto))
+#
 
 
 # In this we will have to take each document which acts as a key word, create a new dictonary, feature count, corpus etc. from the rest
 # of the other words, then see its similarity to all the others
+
+if __name__ == "__main__":
+    similarities(res)
