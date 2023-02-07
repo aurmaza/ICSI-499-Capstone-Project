@@ -2,7 +2,7 @@ import nltk
 import gensim as gn
 import numpy
 from operator import itemgetter
-from collections import defaultdict
+import csv
 nltk.download('stopwords')
 # pip install nltk
 # pip install gensim
@@ -87,9 +87,19 @@ if __name__ == "__main__":
     sentenceCnt = sentenceCount(usersWithfilteredPosts)
     postSimilarity = similarities(usersWithfilteredPosts)
 
-    # made similarities func return a dictionary, merged all dictionaries into one, was unable to find a library for "technical words"
+    # made similarities func return a dictionary & merged all dictionaries into one
+    # was unable to find a library for "technical words"
     ds = [wrdCount, sentenceCnt, postSimilarity]
     d = {}
     for key in wrdCount.keys():
         d[key] = tuple(d[key] for d in ds)
     print(d)
+
+    # outputs fields to csv file
+    fields = ['User', 'Words', 'Sentences', 'Similarity']
+    with open('out.csv', 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fields)
+        writer.writeheader()
+        for key in d.keys():
+            writer.writerow({'User': key, 'Words': d.get(key)[0], 
+            'Sentences': d.get(key)[1], 'Similarity': d.get(key)[2]})
