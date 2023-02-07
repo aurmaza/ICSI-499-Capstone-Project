@@ -2,6 +2,7 @@ import nltk
 import gensim as gn
 import numpy
 from operator import itemgetter
+from collections import defaultdict
 nltk.download('stopwords')
 # pip install nltk
 # pip install gensim
@@ -42,7 +43,7 @@ def sentenceCount(res):
 
 def similarities(blogList):
     users = list(blogList.keys())
-
+    similarity = {}
     for idx, name in enumerate(users):
         others = users[:idx] + users[idx+1:]
 
@@ -63,6 +64,8 @@ def similarities(blogList):
               'against the other blog posts: ', sims[queryDocumentTFIDF])
         average = sum(sims[queryDocumentTFIDF])
         print('The average similarity score for', name, ': ', average)
+        similarity[name] = average
+    return similarity
 
 
 #
@@ -83,3 +86,10 @@ if __name__ == "__main__":
     wrdCount = wordCount(usersWithfilteredPosts)
     sentenceCnt = sentenceCount(usersWithfilteredPosts)
     postSimilarity = similarities(usersWithfilteredPosts)
+
+    # made similarities func return a dictionary, merged all dictionaries into one, was unable to find a library for "technical words"
+    ds = [wrdCount, sentenceCnt, postSimilarity]
+    d = {}
+    for key in wrdCount.keys():
+        d[key] = tuple(d[key] for d in ds)
+    print(d)
