@@ -19,5 +19,5 @@ def findText(html):
 if __name__ == "__main__":
     url = 'https://medium.com/@siliconvalley4u/how-to-develop-your-own-application-1d3ca7becbb9'
     html = getHTML(url)
-    text = findText(html)
+    text = findText(html) 
     
