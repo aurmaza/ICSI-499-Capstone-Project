@@ -1,6 +1,5 @@
-
 Installations
-Package Name: beautifulSoup4 
+Package Name: beautifulSoup4
 Package Version: 4.9.3
 
 Package Name: nltk
@@ -12,12 +11,11 @@ Package Version: 4.0.3
 Package Name: numpy
 Package Version: 1.24.1
 
-Package Name:
-Package Version:
+Package Name: requests
+Package Version: 2.25.1
 
 Package Name:
 Package Version:
 
 Package Name:
 Package Version:
-
