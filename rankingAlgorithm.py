@@ -3,6 +3,7 @@ import gensim as gn
 import numpy
 from operator import itemgetter
 import csv
+import string
 nltk.download('stopwords')
 # pip install nltk
 # pip install gensim
@@ -28,6 +29,18 @@ def wordCount(users):
     for key in users:
         wordCount[key] = len(users[key]) + 1
     return wordCount
+
+def techWordCount(users):
+    techWordCount = {}
+    for userName, text in users.items():
+        techCount = 0
+        for token in text:
+            token = token.translate(str.maketrans('', '', string.punctuation)) # Removes punctuation from the word, resolving comparison issues
+            if token in coding_terms:
+                techCount += 1
+            techWordCount[userName] = techCount
+    return techWordCount
+
 
 
 def sentenceCount(res):
@@ -67,6 +80,9 @@ def similarities(blogList):
         similarity[name] = average
     return similarity
 
+# List of technical words that are not stopwords
+coding_terms = [    "algorithm",    "syntax",    "compiler",    "debugging",    "interpreter",    "library",    "API",    "library function",    "variable",    "data type",    "loop",    "conditional statement",    "function",    "argument",    "parameter",    "recursion",    "object-oriented programming",    "class",    "method",    "attribute",    "inheritance",    "polymorphism",    "encapsulation",    "abstraction",    "structured programming",    "unstructured programming",    "high-level programming language",    "low-level programming language",    "source code",    "machine code",    "binary",    "bytecode",    "compression",    "decompression",    "binary tree",    "hash table",    "stack",    "queue",    "linked list",    "binary search",    "linear search",    "graphical user interface",    "command line interface",    "front-end development",    "back-end development"]
+
 
 #
 
@@ -84,22 +100,25 @@ if __name__ == "__main__":
     usersWithfilteredPosts = stopWordRemoval(users)
 
     wrdCount = wordCount(usersWithfilteredPosts)
+    print("Word Count: ", wrdCount)
+    techwrdCount = techWordCount(usersWithfilteredPosts)
+    print("Tech word count: ", techwrdCount)
     sentenceCnt = sentenceCount(usersWithfilteredPosts)
     postSimilarity = similarities(usersWithfilteredPosts)
 
     # made similarities func return a dictionary & merged all dictionaries into one
     # was unable to find a library for "technical words"
-    ds = [wrdCount, sentenceCnt, postSimilarity]
+    ds = [wrdCount, techwrdCount, sentenceCnt, postSimilarity]
     d = {}
     for key in wrdCount.keys():
         d[key] = tuple(d[key] for d in ds)
     print(d)
 
     # outputs fields to csv file
-    fields = ['User', 'Words', 'Sentences', 'Similarity']
+    fields = ['User', 'Words', 'Technical Words', 'Sentences', 'Similarity']
     with open('out.csv', 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fields)
         writer.writeheader()
         for key in d.keys():
-            writer.writerow({'User': key, 'Words': d.get(key)[0], 
-            'Sentences': d.get(key)[1], 'Similarity': d.get(key)[2]})
+            writer.writerow({'User': key, 'Words': d.get(key)[0], 'Technical Words': d.get(key)[1],
+            'Sentences': d.get(key)[2], 'Similarity': d.get(key)[3]})
