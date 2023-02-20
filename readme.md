@@ -14,8 +14,8 @@ Package Version: 1.24.1
 Package Name: requests
 Package Version: 2.25.1
 
-Package Name:
-Package Version:
+Package Name: python-dotenv-0.21.1
+Package Version: 0.21.1
 
-Package Name:
-Package Version:
+Package Name: google-api-python-client
+Package Version:2.78.0
