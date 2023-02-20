@@ -4,6 +4,7 @@ import numpy
 from operator import itemgetter
 import csv
 import string
+import time
 nltk.download('stopwords')
 # pip install nltk
 # pip install gensim
@@ -19,7 +20,7 @@ def stopWordRemoval(users):
     for userName, text in users.items():
         tolowerCase = text.lower()
         filtered = filter(lambda w: not w in stpwords, tolowerCase.split())
-      
+
         res[userName] = list(filtered)
     return res
 
@@ -30,17 +31,18 @@ def wordCount(users):
         wordCount[key] = len(users[key]) + 1
     return wordCount
 
+
 def techWordCount(users):
     techWordCount = {}
     for userName, text in users.items():
         techCount = 0
         for token in text:
-            token = token.translate(str.maketrans('', '', string.punctuation)) # Removes punctuation from the word, resolving comparison issues
+            # Removes punctuation from the word, resolving comparison issues
+            token = token.translate(str.maketrans('', '', string.punctuation))
             if token in coding_terms:
                 techCount += 1
             techWordCount[userName] = techCount
     return techWordCount
-
 
 
 def sentenceCount(res):
@@ -80,8 +82,10 @@ def similarities(blogList):
         similarity[name] = average
     return similarity
 
+
 # List of technical words that are not stopwords
-coding_terms = [    "algorithm",    "syntax",    "compiler",    "debugging",    "interpreter",    "library",    "API",    "library function",    "variable",    "data type",    "loop",    "conditional statement",    "function",    "argument",    "parameter",    "recursion",    "object-oriented programming",    "class",    "method",    "attribute",    "inheritance",    "polymorphism",    "encapsulation",    "abstraction",    "structured programming",    "unstructured programming",    "high-level programming language",    "low-level programming language",    "source code",    "machine code",    "binary",    "bytecode",    "compression",    "decompression",    "binary tree",    "hash table",    "stack",    "queue",    "linked list",    "binary search",    "linear search",    "graphical user interface",    "command line interface",    "front-end development",    "back-end development"]
+coding_terms = ["algorithm",    "syntax",    "compiler",    "debugging",    "interpreter",    "library",    "API",    "library function",    "variable",    "data type",    "loop",    "conditional statement",    "function",    "argument",    "parameter",    "recursion",    "object-oriented programming",    "class",    "method",    "attribute",    "inheritance",    "polymorphism",    "encapsulation",    "abstraction",    "structured programming",
+                "unstructured programming",    "high-level programming language",    "low-level programming language",    "source code",    "machine code",    "binary",    "bytecode",    "compression",    "decompression",    "binary tree",    "hash table",    "stack",    "queue",    "linked list",    "binary search",    "linear search",    "graphical user interface",    "command line interface",    "front-end development",    "back-end development"]
 
 
 #
@@ -89,6 +93,8 @@ coding_terms = [    "algorithm",    "syntax",    "compiler",    "debugging",    
 # In this we will have to take each document which acts as a key word, create a new dictonary, feature count, corpus etc. from the rest
 # of the other words, then see its similarity to all the others
 if __name__ == "__main__":
+    beg = time.time()
+
     users = {
         "Akhil": "How do central banks control inflation? The US Federal Reserve typically designs financial policy to achieve an inflation target of 2 % . Inflation targeting is a central banking policy that revolves around adjusting monetary policy to achieve a specified annual rate of inflation. Interest rates can be seen as a mechanism or tool to achieve inflation targeting. When inflation is high, banks will raise interest rates. This has a trickle down effect starting with central banks, going down to commercial banks, and eventually down to commercial bank clients such as businesses and individual consumers.",
         "WAISL": "DigiYatra The beta version of the DigiYatra app is presently available at the Play Store (Android platform). The same app will also be available at App Store (iOS platform) in a few weeks’ time. Domestic passengers flying from Terminal 3, Delhi Airport by any airline can download the app and register themselves before witnessing the seamless travel experience at the airport. ‘DigiYatra’ is a Biometric Enabled Seamless Travel experience (BEST) based on Facial Recognition Technology. It aims to provide a paperless and seamless travel experience to passengers. With this technology, passengers' entry would be automatically processed based on the facial recognition system at all checkpoints including entry into the airport, security check areas, aircraft boarding, etc. The technology will make the boarding process significantly faster and more seamless as each passenger would need less than 3 seconds at every touchpoint. Their face would act as their documents, like ID proof, Vaccine proof, and also act as a boarding pass. It will also ensure enhanced security at the airport as the passenger data is validated with Airlines Departure Control System, thereby only designated passengers can only enter the terminal. The entire process is non-intrusive and automatic leading to the optimization of staff for stakeholders like CISF, airlines, and others.",
@@ -121,4 +127,6 @@ if __name__ == "__main__":
         writer.writeheader()
         for key in d.keys():
             writer.writerow({'User': key, 'Words': d.get(key)[0], 'Technical Words': d.get(key)[1],
-            'Sentences': d.get(key)[2], 'Similarity': d.get(key)[3]})
+                             'Sentences': d.get(key)[2], 'Similarity': d.get(key)[3]})
+    end = time.time()
+    print(end-beg)
