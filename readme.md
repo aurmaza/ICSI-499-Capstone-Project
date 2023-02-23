@@ -19,3 +19,10 @@ Package Version: 0.21.1
 
 Package Name: google-api-python-client
 Package Version:2.78.0
+
+Package Name: moviepy
+Package Version:1.0.3
+
+
+Package Name: SpeechRecognition
+Package Version:3.9.0

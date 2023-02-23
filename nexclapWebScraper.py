@@ -11,3 +11,4 @@ def getBlogInfo(url):
 if __name__ == "__main__":
     url = 'https://www.siliconvalley4u.com/blogs/applied-education-how-technology-can-help'
     description = getBlogInfo(url)
+    print(description)
