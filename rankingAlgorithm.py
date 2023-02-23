@@ -1,6 +1,7 @@
 import nltk
 import gensim as gn
 import numpy
+import sys
 from operator import itemgetter
 import csv
 import string
@@ -129,4 +130,30 @@ if __name__ == "__main__":
             writer.writerow({'User': key, 'Words': d.get(key)[0], 'Technical Words': d.get(key)[1],
                              'Sentences': d.get(key)[2], 'Similarity': d.get(key)[3]})
     end = time.time()
+
+
+    code = """
+def f(x):
+    x = x + 1
+    return x
+
+print('This is my output.')
+"""
+#beg = time.time()
+#end = time.time()
+
+    #insert text into beginning of code variable
+    code = """
+import time
+begg = time.time()
+""" + str(users) + """
+endd = time.time()
+print('Time taken: ', endd-begg)
+    """
+
+    # count the amount of lines of code in the code string
+    lines = code.splitlines()
+    exec(code)
+    print("Line Count", (lines.__len__() + 1) - 4)
+
     print(end-beg)
