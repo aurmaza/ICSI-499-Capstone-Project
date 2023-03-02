@@ -7,7 +7,13 @@ user_data = {}
 # Key: Nexclap Username, Value: Dictionary with
 # Key: Column name, Value: Value of given column
 
-
+weights = {"blogpost": 2,
+           "dailyposts": 1,
+           "code_posts": 4,
+           "vedio_posts": 1,
+           "likes_received": 1,
+           "comments_received": 1,
+           "comments_made": 1}
 for index, row in data.iterrows():
     # Create dictionary for value of user data key
     user_dict = {}
@@ -18,6 +24,22 @@ for index, row in data.iterrows():
     # extract the username
     username = row['nexclapURL'].replace("https://nexclap.com/", "")
     # Add that users dictionary to the dictionary for user data
+    # Compute the total score for each user by multiplying their scores in each category by the corresponding weights and summing them up
+
+    user_dict["total_score"] = (row["blogpost"] * weights["blogpost"]) + \
+        (row["dailyposts"] * weights["dailyposts"]) + \
+        (row["code_posts"] * weights["code_posts"]) + \
+        (row["vedio_posts"] * weights["vedio_posts"]) + \
+        (row["likes_recieved"] * weights["likes_received"]) + \
+        (row["comments_received"] * weights["comments_received"]) + \
+        (row["comments_made"] * weights["comments_made"])
     # Key = username, Value = dictionary of user's information
+
     user_data[username] = user_dict
-print(user_data['RushilRoy14247']['dailyposts'])
+
+print(user_data['alanrocque'])
+
+# Define the weights for each parameter
+
+
+# Compute the total score for each user by multiplying their scores in each category by the corresponding weights and summing them up
