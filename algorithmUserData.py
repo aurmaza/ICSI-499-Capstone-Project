@@ -37,7 +37,12 @@ for index, row in data.iterrows():
 
     user_data[username] = user_dict
 
-print(user_data['alanrocque'])
+
+sorted_user_data = sorted(
+    user_data.items(), key=lambda x: x[1]['total_score'], reverse=True)
+toCsv = pd.DataFrame([user_dict for _, user_dict in sorted_user_data], index=[
+                     username for username, _ in sorted_user_data])
+toCsv.to_csv("sorted_user_data.csv")
 
 # Define the weights for each parameter
 
