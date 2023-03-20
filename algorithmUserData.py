@@ -1,6 +1,6 @@
 import pandas as pd
 
-data = pd.read_csv("query.csv")
+data = pd.read_csv("SampleFiles/query.csv")
 
 user_data = {}
 # Creates a Dictionary with
@@ -42,7 +42,7 @@ sorted_user_data = sorted(
     user_data.items(), key=lambda x: x[1]['total_score'], reverse=True)
 toCsv = pd.DataFrame([user_dict for _, user_dict in sorted_user_data], index=[
                      username for username, _ in sorted_user_data])
-toCsv.to_csv("sorted_user_data.csv")
+toCsv.to_csv("SampleFiles/sorted_user_data.csv")
 
 # Define the weights for each parameter
 
