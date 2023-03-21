@@ -5,3 +5,7 @@ query.csv
 tempCodeRunnerFile.py
 *.csv
 *.pyc
+__pycache__
+SampleFiles
+.gitattributes
+tempCodeRunnerFile

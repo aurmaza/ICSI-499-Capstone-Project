@@ -96,9 +96,6 @@ coding_terms = ["algorithm",    "syntax",    "compiler",    "debugging",    "int
 # In this we will have to take each document which acts as a key word, create a new dictonary, feature count, corpus etc. from the rest
 # of the other words, then see its similarity to all the others
 def testAlgorithm(users):
-    #beg = time.time()
-
-    
 
     usersWithfilteredPosts = stopWordRemoval(users)
 
@@ -124,32 +121,26 @@ def testAlgorithm(users):
         for key in userDict.keys():
             writer.writerow({'User': key, 'Words': userDict.get(key)[0], 'Technical Words': userDict.get(key)[1],
                              'Sentences': userDict.get(key)[2], 'Similarity': userDict.get(key)[3]})
-    #end = time.time()
     return(userDict)
 
 
-#     code = """
-# def f(x):
-#     x = x + 1
-#     return x
 
-# print('This is my output.')
-# """
-# #beg = time.time()
-# #end = time.time()
 
-#     # insert text into beginning of code variable
-#     code = """
-# import time
-# begg = time.time()
-# """ + str(users) + """
-# endd = time.time()
-# print('Time taken: ', endd-begg)
-#     """
-
-#     # count the amount of lines of code in the code string
-#     lines = code.splitlines()
-#     exec(code)
-#     print("Line Count", (lines.__len__() + 1) - 4)
-
-#     print(end-beg)
+def runTime(sourceCode):
+    timeTaken = 0
+    lineCount = 0
+    code = """
+import time
+beg = time.time()
+""" + sourceCode + """
+end = time.time()
+timeTaken = end-beg
+lines = code.splitlines()
+lineCount = (lines.__len__() + 1)
+#print(timeTaken, lineCount)
+"""
+    _locals = locals()
+    exec(code, globals(), _locals)
+    timet = _locals.get('timeTaken')
+    lc = _locals.get('lineCount')
+    return timet, lc

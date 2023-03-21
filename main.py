@@ -24,4 +24,9 @@ if __name__ == "__main__":
     results['rankingAlgorithm'] = rankingAlgorithm.testAlgorithm(users)
     results['speechRecognizer'] = speechRecognizer.getYoutubeCaptions(
         "https://www.youtube.com/watch?v=0GHPWOEQbII&list=PLQJqw6PVkyiOf0XZ0jhHie8zduelvSq7N")
+    sourceCode = """
+for i in range(100):
+    i = i + 1
+"""
+    results["codeRunTime"] = rankingAlgorithm.runTime(sourceCode)
     print(results)
